@@ -1,29 +1,12 @@
-import { useEffect, useState } from 'react'
-import './App.css'
+import { User } from './components/User'
 
-// project imports
-import { UserRegister } from './components/UserRegister'
 function App() {
-  const [count, setCount] = useState(0)
-  const [message, setMessage] = useState('')
-
-  useEffect(() => {
-    fetch('/api/hello')
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message))
-      .catch((err) => console.error('API error:', err))
-  }, [])
-
   return (
-    <>
-    <UserRegister />
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>{message || 'Calling API...'}</p>
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
+      <div className="p-8 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 w-full max-w-xl">
+        <User />
       </div>
-    </>
+    </div>
   )
 }
 
