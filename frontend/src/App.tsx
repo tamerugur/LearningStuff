@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+// project imports
+import { UserRegister } from './components/UserRegister'
 function App() {
   const [count, setCount] = useState(0)
   const [message, setMessage] = useState('')
@@ -14,7 +16,7 @@ function App() {
 
   return (
     <>
-      <h1>Vite + React</h1>
+    <UserRegister />
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
