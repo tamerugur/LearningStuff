@@ -1,0 +1,21 @@
+# Ignore node_modules everywhere
+**/node_modules/
+
+# Ignore build outputs
+**/dist/
+**/build/
+
+# Logs
+**/*.log
+npm-debug.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs/editors
+.vscode/
+.idea/
+
+# TypeScript cache
+**/*.tsbuildinfo
