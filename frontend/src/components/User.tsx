@@ -6,7 +6,7 @@ export function User() {
   const [activeTab, setActiveTab] = useState<'register' | 'login'>('register')
 
   return (
-    <div className="w-full max-w-xs mx-auto">
+    <div className="w-full max-w-4xl mx-auto">
       <div className="flex border-b border-gray-300 dark:border-gray-600 mb-6">
         <button
           className={`flex-1 py-2 text-sm font-medium transition-colors ${
