@@ -8,6 +8,9 @@ export const registerSchema = z
       .refine((val) => val.trim().split(/\s+/).length >= 2, {
         message: 'Please enter both name and surname',
       }),
+      id: z.string()
+  .regex(/^[1-9][0-9]{10}$/, 'TC must be 11 digits and not start with 0')
+  .refine(isValidTurkishID, 'Invalid Turkish ID number'),
     email: z.string().email('Invalid email address'),
     password: z
       .string()
@@ -23,3 +26,13 @@ export const registerSchema = z
   })
 
 export type RegisterData = z.infer<typeof registerSchema>
+
+function isValidTurkishID(tc: string): boolean {
+  const digits = tc.split('').map(Number);
+  if (digits.length !== 11) return false;
+  const oddSum = digits[0] + digits[2] + digits[4] + digits[6] + digits[8];
+  const evenSum = digits[1] + digits[3] + digits[5] + digits[7];
+  const digit10 = ((oddSum * 7) - evenSum) % 10;
+  const digit11 = digits.slice(0, 10).reduce((acc, d) => acc + d, 0) % 10;
+  return digits[9] === digit10 && digits[10] === digit11;
+}
