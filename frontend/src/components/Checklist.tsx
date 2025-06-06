@@ -1,22 +1,21 @@
-import React from 'react'
-import { CheckCircle, XCircle } from 'lucide-react'
+import React from "react";
+import { CheckCircle, XCircle } from "lucide-react";
 
 type ChecklistItem = {
-  label: string
-  passed: boolean
-}
+  label: string;
+  passed: boolean;
+};
 
 type ChecklistProps = {
-  items: ChecklistItem[]
-  visible: boolean
-  hide?: boolean
-}
+  items: ChecklistItem[];
+  visible: boolean;
+};
 
-export function Checklist({ items, visible, hide = false }: ChecklistProps) {
-  if (!visible) return null
+export function Checklist({ items, visible }: ChecklistProps) {
+  if (!visible) return null;
 
   return (
-    <ul className={`mt-2 space-y-1 text-sm transition-opacity duration-800 ${hide ? 'opacity-0' : 'opacity-100'}`}>
+    <ul className="mt-2 space-y-1 text-sm transition-opacity duration-700 opacity-100">
       {items.map((item, i) => (
         <li
           key={i}
@@ -31,5 +30,5 @@ export function Checklist({ items, visible, hide = false }: ChecklistProps) {
         </li>
       ))}
     </ul>
-  )
+  );
 }
