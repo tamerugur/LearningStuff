@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "client": "npm run dev --prefix frontend",
+    "client": "npm run dev --prefix frontend -- --open",
     "server": "npm run dev --prefix backend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
