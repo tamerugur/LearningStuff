@@ -5,7 +5,7 @@ export function UserLogin() {
         <div className="flex flex-col items-center gap-1">
           <div className="w-1/2">
             <label className="block mb-1 font-medium text-sm text-left">
-              Email:
+              Email/Username:
             </label>
             <input
               type="email"

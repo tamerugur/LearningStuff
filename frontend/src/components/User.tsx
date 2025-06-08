@@ -6,13 +6,28 @@ export function User() {
   const [activeTab, setActiveTab] = useState<"register" | "login">("login");
   const [direction, setDirection] = useState<"left" | "right">("left");
   const [contentHeight, setContentHeight] = useState<number>(0);
+  const [isMounted, setIsMounted] = useState(false);
   const loginRef = useRef<HTMLDivElement>(null);
   const registerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     const activeRef = activeTab === "login" ? loginRef : registerRef;
     if (activeRef.current) {
+      const resizeObserver = new ResizeObserver(() => {
+        if (activeRef.current) {
+          setContentHeight(activeRef.current.scrollHeight);
+        }
+      });
+      resizeObserver.observe(activeRef.current);
       setContentHeight(activeRef.current.scrollHeight);
+      return () => resizeObserver.disconnect();
     }
   }, [activeTab]);
 
@@ -79,12 +94,18 @@ export function User() {
       </div>
 
       <div
-        className="transition-all duration-1100 ease-in-out overflow-hidden relative"
+        className={`relative overflow-hidden ${
+          isMounted ? "transition-height duration-300 ease-out" : ""
+        }`}
         style={{ height: contentHeight }}
       >
         <div
           ref={loginRef}
-          className={`absolute w-full transition-all duration-1100 ease-in-out ${
+          className={`absolute w-full ${
+            isMounted
+              ? "transition-[transform,opacity] duration-1100 ease-in-out"
+              : ""
+          } ${
             activeTab === "login"
               ? "translate-y-0 opacity-100"
               : "-translate-y-full opacity-0"
@@ -94,7 +115,11 @@ export function User() {
         </div>
         <div
           ref={registerRef}
-          className={`absolute w-full transition-all duration-1100 ease-in-out ${
+          className={`absolute w-full ${
+            isMounted
+              ? "transition-[transform,opacity] duration-1100 ease-in-out"
+              : ""
+          } ${
             activeTab === "register"
               ? "translate-y-0 opacity-100"
               : "translate-y-full opacity-0"

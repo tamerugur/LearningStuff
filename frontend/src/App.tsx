@@ -1,13 +1,22 @@
-import { User } from './components/User'
+import { Header } from "./components/Header";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { About } from "./pages/About";
+import { Contact } from "./pages/Contact";
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-4">
-      <div className="p-8 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 w-full max-w-xl">
-        <User />
-      </div>
+    <div className="min-h-screen bg-background text-foreground">
+      <Header />
+      <main className="pt-16">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
