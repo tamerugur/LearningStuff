@@ -1,7 +1,9 @@
 {
   "scripts": {
     "client": "npm run dev --prefix frontend -- --open",
-    "server": "npm run dev --prefix backend",
+    "auth": "npm run dev --prefix backend/auth-service",
+    "gateway": "npm run dev --prefix gateway",
+    "server": "concurrently \"npm run auth\" \"npm run gateway\"",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "devDependencies": {
