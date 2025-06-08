@@ -22,3 +22,5 @@ Thumbs.db
 
 # dotenv files
 .env
+
+.cursor
