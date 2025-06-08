@@ -7,7 +7,14 @@ export const registerSchema = z
       .min(1, "Full name is required")
       .refine((val) => val.trim().split(/\s+/).length >= 2, {
         message: "Please enter both name and surname",
-      }),
+      })
+      .transform((val) =>
+        val
+          .toLowerCase()
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ")
+      ),
     username: z
       .string()
       .min(3, "Username must be at least 3 characters")
@@ -38,6 +45,13 @@ export const registerSchema = z
   });
 
 export type RegisterData = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+  identifier: z.string().min(1, "Email or username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type LoginData = z.infer<typeof loginSchema>;
 
 function isValidTurkishID(tc: string): boolean {
   const digits = tc.split("").map(Number);
