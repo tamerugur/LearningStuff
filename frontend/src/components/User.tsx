@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { UserRegister } from "./UserRegister";
 import { UserLogin } from "./UserLogin";
 
 export function User() {
   const [activeTab, setActiveTab] = useState<"register" | "login">("login");
   const [direction, setDirection] = useState<"left" | "right">("left");
+  const [contentHeight, setContentHeight] = useState<number>(0);
+  const loginRef = useRef<HTMLDivElement>(null);
+  const registerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const activeRef = activeTab === "login" ? loginRef : registerRef;
+    if (activeRef.current) {
+      setContentHeight(activeRef.current.scrollHeight);
+    }
+  }, [activeTab]);
 
   const handleTabChange = (tab: "register" | "login") => {
     if (tab !== activeTab) {
@@ -68,9 +78,30 @@ export function User() {
         </button>
       </div>
 
-      <div>
-        {activeTab === "register" && <UserRegister />}
-        {activeTab === "login" && <UserLogin />}
+      <div
+        className="transition-all duration-1100 ease-in-out overflow-hidden relative"
+        style={{ height: contentHeight }}
+      >
+        <div
+          ref={loginRef}
+          className={`absolute w-full transition-all duration-1100 ease-in-out ${
+            activeTab === "login"
+              ? "translate-y-0 opacity-100"
+              : "-translate-y-full opacity-0"
+          }`}
+        >
+          <UserLogin />
+        </div>
+        <div
+          ref={registerRef}
+          className={`absolute w-full transition-all duration-1100 ease-in-out ${
+            activeTab === "register"
+              ? "translate-y-0 opacity-100"
+              : "translate-y-full opacity-0"
+          }`}
+        >
+          <UserRegister />
+        </div>
       </div>
     </div>
   );

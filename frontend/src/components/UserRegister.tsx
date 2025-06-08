@@ -149,7 +149,7 @@ export function UserRegister() {
         <button
           type="submit"
           disabled={mutation.isPending}
-          className={`w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition ${
+          className={`bg-blue-600 text-white px-8 py-2 rounded hover:bg-blue-700 transition self-center ${
             mutation.isPending ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
