@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { CheckCircle, XCircle } from "lucide-react";
 
 type ChecklistItem = {
@@ -14,26 +14,12 @@ type ChecklistProps = {
 export function Checklist({ items, visible }: ChecklistProps) {
   const listRef = useRef<HTMLUListElement>(null);
 
-  useEffect(() => {
-    const list = listRef.current;
-    if (!list) return;
-
-    if (visible) {
-      const height = list.scrollHeight;
-      list.style.height = `${height}px`;
-      list.style.opacity = "1";
-    } else {
-      list.style.height = "0";
-      list.style.opacity = "0";
-    }
-  }, [visible, items]);
+  if (!visible) {
+    return null;
+  }
 
   return (
-    <ul
-      ref={listRef}
-      className={`mt-2 space-y-1 text-sm overflow-hidden transition-all duration-300 ease-in-out`}
-      style={{ height: 0, opacity: 0 }}
-    >
+    <ul ref={listRef} className="mt-2 space-y-1 text-sm">
       {items.map((item, i) => (
         <li key={i} className="flex items-center gap-2 font-medium">
           {item.passed ? (
