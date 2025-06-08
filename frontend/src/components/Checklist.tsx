@@ -14,12 +14,13 @@ type ChecklistProps = {
 export function Checklist({ items, visible }: ChecklistProps) {
   const listRef = useRef<HTMLUListElement>(null);
 
-  if (!visible) {
-    return null;
-  }
-
   return (
-    <ul ref={listRef} className="mt-2 space-y-1 text-sm">
+    <ul
+      ref={listRef}
+      className={`mt-2 space-y-1 text-sm overflow-hidden transition-all duration-300 ease-in-out ${
+        visible ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+      }`}
+    >
       {items.map((item, i) => (
         <li key={i} className="flex items-center gap-2 font-medium">
           {item.passed ? (

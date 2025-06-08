@@ -3,6 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { loginSchema, LoginData } from "../schemas/userSchema";
 import { loginUser } from "../lib/api";
+import { useState, useEffect } from "react";
+
+type ErrorState = "hidden" | "visible" | "hiding";
 
 export function UserLogin() {
   const {
@@ -13,15 +16,41 @@ export function UserLogin() {
     resolver: zodResolver(loginSchema),
   });
 
-  const mutation = useMutation({
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [errorState, setErrorState] = useState<ErrorState>("hidden");
+
+  const mutation = useMutation<{ token: string }, Error, LoginData>({
     mutationFn: loginUser,
-    onSuccess: () => {
-      console.log("Login successful!");
+    onSuccess: (data) => {
+      localStorage.setItem("authToken", data.token);
+      console.log("Login successful! Token stored.");
+      if (errorState !== "hidden") {
+        setErrorState("hiding");
+      }
     },
     onError: (error) => {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error.message);
+      setApiError(error.message || "Login failed");
+      setErrorState("visible");
     },
   });
+
+  useEffect(() => {
+    if (errorState === "visible") {
+      const timer = setTimeout(() => {
+        setErrorState("hiding");
+      }, 1200);
+
+      return () => clearTimeout(timer);
+    }
+  }, [errorState, apiError]);
+
+  const handleTransitionEnd = () => {
+    if (errorState === "hiding") {
+      setErrorState("hidden");
+      setApiError(null);
+    }
+  };
 
   const onSubmit = (data: LoginData) => {
     mutation.mutate(data);
@@ -81,11 +110,18 @@ export function UserLogin() {
         {mutation.isSuccess && (
           <p className="text-green-600 text-center mt-2">Login successful!</p>
         )}
-        {mutation.isError && (
-          <p className="text-red-600 text-center mt-2">
-            {mutation.error?.message || "Login failed"}
-          </p>
-        )}
+        <div
+          onTransitionEnd={handleTransitionEnd}
+          className={`overflow-hidden ${
+            errorState === "visible" ? "max-h-10 mt-2" : "max-h-0 mt-0"
+          } ${
+            errorState === "hiding"
+              ? "transition-all duration-500 ease-out"
+              : ""
+          }`}
+        >
+          {apiError && <p className="text-red-600 text-center">{apiError}</p>}
+        </div>
       </form>
     </div>
   );
