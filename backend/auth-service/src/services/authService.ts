@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { hashPassword } from "../utils/hash";
-import { RegisterData } from "../schemas/userSchema";
+import { hashPassword, comparePassword } from "../utils/hash";
+import { RegisterData, LoginData } from "../schemas/userSchema";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 export const AuthService = {
   async register(data: RegisterData) {
@@ -31,5 +33,31 @@ export const AuthService = {
     });
 
     return { id: newUser.id, email: newUser.email, username: newUser.username };
+  },
+
+  async login(data: LoginData) {
+    const { identifier, password } = data;
+
+    const user = await prisma.authUser.findFirst({
+      where: {
+        OR: [{ email: identifier }, { username: identifier }],
+      },
+    });
+
+    if (!user) {
+      throw new Error("Invalid credentials");
+    }
+
+    const isPasswordValid = await comparePassword(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new Error("Invalid credentials");
+    }
+
+    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    return { token };
   },
 };

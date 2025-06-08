@@ -33,6 +33,13 @@ export const registerSchema = z.object({
 
 export type RegisterData = z.infer<typeof registerSchema>;
 
+export const loginSchema = z.object({
+  identifier: z.string().min(1, "Identifier is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type LoginData = z.infer<typeof loginSchema>;
+
 function isValidTurkishID(tc: string): boolean {
   const digits = tc.split("").map(Number);
   if (digits.length !== 11) return false;
