@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useWatch, UseFormRegister, Control } from "react-hook-form";
 import { Checklist } from "@/components/Checklist";
-import { RegisterData } from "@shared/schemas/userSchema";
+import { RegisterData } from "../schemas/userSchema";
+import { useDebounceValue } from "../hooks/useDebounceValue";
 
 type ChecklistItem = {
   label: string;
@@ -12,9 +13,10 @@ type Props = {
   name: keyof RegisterData;
   label: string;
   type?: string;
-  checklistFn: (value: string) => ChecklistItem[];
+  checklistFn: (value: string, compareValue?: string) => ChecklistItem[];
   register: UseFormRegister<RegisterData>;
   control: Control<RegisterData>;
+  compareField?: keyof RegisterData;
 };
 
 export function ChecklistField({
@@ -24,16 +26,40 @@ export function ChecklistField({
   checklistFn,
   register,
   control,
+  compareField,
 }: Props) {
   const value = useWatch({ control, name }) || "";
-  const checklist = useMemo(() => checklistFn(value), [value, checklistFn]);
+  const compareFieldValue =
+    useWatch({
+      control,
+      name: compareField || name,
+    }) || "";
 
-  const shouldShowChecklist = !!value && checklist.some((item) => !item.passed);
+  const debouncedValue = useDebounceValue(value, 300);
+  const debouncedCompareValue = useDebounceValue(compareFieldValue, 300);
+
+  const checklist = useMemo(
+    () =>
+      checklistFn(
+        debouncedValue,
+        compareField ? debouncedCompareValue : undefined
+      ),
+    [debouncedValue, debouncedCompareValue, compareField, checklistFn]
+  );
+
+  const shouldShowChecklist =
+    !!debouncedValue && checklist.some((item) => !item.passed);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setVisible(shouldShowChecklist), 300);
-    return () => clearTimeout(timeout);
+    if (shouldShowChecklist) {
+      // Show immediately when needed
+      setVisible(true);
+    } else {
+      // Add a small delay before hiding to ensure smooth transition
+      const timeout = setTimeout(() => setVisible(false), 300);
+      return () => clearTimeout(timeout);
+    }
   }, [shouldShowChecklist]);
 
   return (
