@@ -1,0 +1,2 @@
+DATABASE_URL="postgresql://postgres:<your_password>@localhost:5433/AuthDB"
+PORT=YOUR_PORT_FOR_AUTH_SERVICE
