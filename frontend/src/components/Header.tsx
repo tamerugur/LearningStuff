@@ -50,14 +50,6 @@ export function Header() {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center gap-4">
-          <button className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition">
-            Settings
-          </button>
-          <button className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition">
-            Profile
-          </button>
-        </div>
       </div>
     </header>
   );
