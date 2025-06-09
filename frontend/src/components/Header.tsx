@@ -8,13 +8,10 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 z-50">
+    <header className="fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-50">
       <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link
-            to="/"
-            className="text-xl font-semibold text-gray-900 dark:text-white"
-          >
+          <Link to="/" className="text-xl font-semibold text-foreground">
             Your Logo
           </Link>
           <nav className="hidden sm:flex items-center gap-4">
@@ -22,8 +19,8 @@ export function Header() {
               to="/"
               className={`transition ${
                 isActive("/")
-                  ? "text-blue-600 dark:text-blue-400"
-                  : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Home
@@ -32,8 +29,8 @@ export function Header() {
               to="/about"
               className={`transition ${
                 isActive("/about")
-                  ? "text-blue-600 dark:text-blue-400"
-                  : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               About
@@ -42,8 +39,8 @@ export function Header() {
               to="/contact"
               className={`transition ${
                 isActive("/contact")
-                  ? "text-blue-600 dark:text-blue-400"
-                  : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               Contact
