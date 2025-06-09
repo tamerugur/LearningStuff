@@ -4,7 +4,7 @@
     "auth": "npm run dev --prefix backend/auth-service",
     "gateway": "npm run dev --prefix gateway",
     "user": "npm run dev --prefix backend/user-service",
-    "server": "concurrently \"npm run auth\" \"npm run gateway\" \"npm run user\"",
+    "server": "concurrently \"npm run auth\" \"npm run user\" \"npm run gateway\" ",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "devDependencies": {
