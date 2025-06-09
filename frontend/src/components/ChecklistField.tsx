@@ -64,7 +64,7 @@ export function ChecklistField({
   }, [shouldShowChecklist]);
 
   return (
-    <div className="w-full max-w-[40%]">
+    <div className="w-full max-w-[44%]">
       <Input
         {...register(name)}
         type={type}

@@ -140,7 +140,7 @@ export function UserRegister() {
             compareField="repeatPassword"
             required={true}
           />
-          <div className="flex-1 w-full max-w-[40%]">
+          <div className="flex-1 w-full max-w-[44%]">
             <Input
               {...register("repeatPassword")}
               type="password"
