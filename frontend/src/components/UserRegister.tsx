@@ -4,6 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { registerSchema, RegisterData } from "../schemas/userSchema";
 import { ChecklistField } from "./ChecklistField";
 import { registerUser } from "../lib/api";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export function UserRegister() {
   const { register, handleSubmit, control } = useForm<RegisterData>({
@@ -135,26 +137,25 @@ export function UserRegister() {
             compareField="repeatPassword"
           />
           <div className="flex-1">
-            <label className="block mb-1 font-medium text-sm">
-              Repeat Password:
-            </label>
-            <input
+            <Input
               {...register("repeatPassword")}
               type="password"
-              className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+              placeholder="Repeat Password"
+              className="w-[90%] px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
             />
           </div>
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={mutation.isPending}
-          className={`bg-blue-600 text-white px-8 py-2 rounded hover:bg-blue-700 transition self-center ${
+          variant="default"
+          className={`self-center px-8 py-2 ${
             mutation.isPending ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
           {mutation.isPending ? "Registering..." : "Register"}
-        </button>
+        </Button>
 
         {mutation.isSuccess && (
           <p className="text-green-600 text-center mt-2">

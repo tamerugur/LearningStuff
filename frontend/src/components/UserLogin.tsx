@@ -4,6 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { loginSchema, LoginData } from "../schemas/userSchema";
 import { loginUser } from "../lib/api";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 type ErrorState = "hidden" | "visible" | "hiding";
 
@@ -64,12 +66,10 @@ export function UserLogin() {
       >
         <div className="flex flex-col items-center gap-1">
           <div className="w-1/2">
-            <label className="block mb-1 font-medium text-sm text-left">
-              Email/Username:
-            </label>
-            <input
+            <Input
               {...register("identifier")}
-              className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+              type="text"
+              placeholder="Enter your email or username"
             />
             {errors.identifier && (
               <p className="text-red-500 text-xs mt-1">
@@ -81,13 +81,10 @@ export function UserLogin() {
 
         <div className="flex flex-col items-center gap-1">
           <div className="w-1/2">
-            <label className="block mb-1 font-medium text-sm text-left">
-              Password:
-            </label>
-            <input
+            <Input
               {...register("password")}
               type="password"
-              className="w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+              placeholder="Enter your password"
             />
             {errors.password && (
               <p className="text-red-500 text-xs mt-1">
@@ -97,15 +94,18 @@ export function UserLogin() {
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={mutation.isPending}
-          className={`bg-blue-600 text-white px-8 py-2 rounded hover:bg-blue-700 transition self-center ${
-            mutation.isPending ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-        >
-          {mutation.isPending ? "Logging in..." : "Login"}
-        </button>
+        <div className="flex justify-center">
+          <Button
+            type="submit"
+            disabled={mutation.isPending}
+            variant="default"
+            className={`px-8 py-4 ${
+              mutation.isPending ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {mutation.isPending ? "Logging in..." : "Login"}
+          </Button>
+        </div>
 
         {mutation.isSuccess && (
           <p className="text-green-600 text-center mt-2">Login successful!</p>
