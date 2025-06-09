@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMainPageData } from "../lib/api";
+import { getUserProfile } from "../lib/api";
 
 export function MainPage() {
   const { data, error, isLoading } = useQuery<{ message: string }, Error>({
-    queryKey: ["mainPageData"],
-    queryFn: getMainPageData,
+    queryKey: ["userProfile"],
+    queryFn: getUserProfile,
     retry: false, // Do not retry on 401/404 errors
   });
 
