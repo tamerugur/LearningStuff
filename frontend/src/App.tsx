@@ -1,8 +1,8 @@
 import { Header } from "./components/Header";
 import { Routes, Route } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { About } from "./pages/About";
-import { Contact } from "./pages/Contact";
+import { User } from "./components/User";
+import { MainPage } from "./pages/MainPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -10,9 +10,10 @@ function App() {
       <Header />
       <main className="pt-16">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/auth" element={<User />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<MainPage />} />
+          </Route>
         </Routes>
       </main>
     </div>
