@@ -18,6 +18,7 @@ type Props = {
   register: UseFormRegister<RegisterData>;
   control: Control<RegisterData>;
   compareField?: keyof RegisterData;
+  required?: boolean;
 };
 
 export function ChecklistField({
@@ -28,6 +29,7 @@ export function ChecklistField({
   register,
   control,
   compareField,
+  required = false,
 }: Props) {
   const value = useWatch({ control, name }) || "";
   const compareFieldValue =
@@ -54,22 +56,20 @@ export function ChecklistField({
 
   useEffect(() => {
     if (shouldShowChecklist) {
-      // Show immediately when needed
       setVisible(true);
     } else {
-      // Add a small delay before hiding to ensure smooth transition
       const timeout = setTimeout(() => setVisible(false), 300);
       return () => clearTimeout(timeout);
     }
   }, [shouldShowChecklist]);
 
   return (
-    <div className="flex-1">
+    <div className="w-full max-w-[40%]">
       <Input
         {...register(name)}
         type={type}
         autoComplete="off"
-        placeholder={label}
+        placeholder={required ? `${label} *` : label}
         className="w-[90%] px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
       />
       <Checklist items={checklist} visible={visible} />

@@ -11,7 +11,7 @@ model AuthUser {
   id        String   @id @default(uuid())
   fullName  String
   username  String   @unique
-  tcId      String   @unique
+  tcId      String?   @unique
   email     String   @unique
   password  String
   createdAt DateTime @default(now())

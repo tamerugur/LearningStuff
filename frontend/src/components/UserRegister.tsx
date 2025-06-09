@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { registerSchema, RegisterData } from "../schemas/userSchema";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export function UserRegister() {
   const { register, handleSubmit, control } = useForm<RegisterData>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(registerSchema) as Resolver<RegisterData>,
     criteriaMode: "all",
   });
 
@@ -26,14 +26,14 @@ export function UserRegister() {
 
   const emailChecklist = (email: string) => [
     {
-      label: "Invalid email format",
+      label: "Valid email format",
       passed: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
     },
   ];
 
   const fullNameChecklist = (name: string) => [
     {
-      label: "Must contain name and surname",
+      label: "Full name with at least two words",
       passed: name.trim().split(/\s+/).length >= 2,
     },
   ];
@@ -80,25 +80,26 @@ export function UserRegister() {
 
     return [
       {
-        label: "Invalid TC ID format",
+        label: "Valid 11-digit Turkish ID",
         passed: lengthValid && tenthValid && eleventhValid,
       },
     ];
   };
 
   return (
-    <div className="relative flex justify-center">
+    <div className="relative flex justify-center mt-3 mb-3">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-2xl w-full flex flex-col gap-6 text-left"
       >
-        <div className="flex gap-4">
+        <div className="flex gap-y-4 justify-center mx-auto w-full max-w-2xl">
           <ChecklistField
             name="email"
             label="Email"
             register={register}
             control={control}
             checklistFn={emailChecklist}
+            required={true}
           />
           <ChecklistField
             name="tcId"
@@ -109,13 +110,14 @@ export function UserRegister() {
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-y-4 justify-center mx-auto w-full max-w-2xl">
           <ChecklistField
             name="fullName"
             label="Full Name"
             register={register}
             control={control}
             checklistFn={fullNameChecklist}
+            required={true}
           />
           <ChecklistField
             name="username"
@@ -123,10 +125,11 @@ export function UserRegister() {
             register={register}
             control={control}
             checklistFn={usernameChecklist}
+            required={true}
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-y-4 justify-center mx-auto w-full max-w-2xl">
           <ChecklistField
             name="password"
             label="Password"
@@ -135,12 +138,13 @@ export function UserRegister() {
             checklistFn={passwordChecklist}
             type="password"
             compareField="repeatPassword"
+            required={true}
           />
-          <div className="flex-1">
+          <div className="flex-1 w-full max-w-[40%]">
             <Input
               {...register("repeatPassword")}
               type="password"
-              placeholder="Repeat Password"
+              placeholder="Repeat Password *"
               className="w-[90%] px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
             />
           </div>

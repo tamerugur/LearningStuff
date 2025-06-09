@@ -15,10 +15,14 @@ export const registerSchema = z.object({
       /^[a-zA-Z0-9_]+$/,
       "Username can only contain letters, numbers, and underscores"
     ),
-  tcId: z
-    .string()
-    .regex(/^[1-9][0-9]{10}$/, "TC must be 11 digits and not start with 0")
-    .refine(isValidTurkishID, "Invalid Turkish ID number"),
+  tcId: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z
+      .string()
+      .regex(/^[1-9][0-9]{10}$/, "TC must be 11 digits and not start with 0")
+      .refine(isValidTurkishID, "Invalid Turkish ID number")
+      .optional()
+  ),
   email: z.string().email("Invalid email address"),
   password: z
     .string()

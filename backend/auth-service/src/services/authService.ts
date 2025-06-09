@@ -10,9 +10,19 @@ export const AuthService = {
   async register(data: RegisterData) {
     const { email, username, fullName, tcId, password } = data;
 
+    const orConditions: (
+      | { email: string }
+      | { username: string }
+      | { tcId: string }
+    )[] = [{ email }, { username }];
+
+    if (tcId) {
+      orConditions.push({ tcId });
+    }
+
     const existing = await prisma.authUser.findFirst({
       where: {
-        OR: [{ email }, { username }, { tcId }],
+        OR: orConditions,
       },
     });
 
