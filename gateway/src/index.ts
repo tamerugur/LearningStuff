@@ -19,7 +19,7 @@ app.use(
 
 app.use(
   "/api/auth",
-  proxy(process.env.AUTH_SERVICE_URL || "http://localhost:4000", {
+  proxy(process.env.AUTH_SERVICE_URL || "http://localhost:4001", {
     proxyReqPathResolver: (req) => {
       return req.originalUrl;
     },
@@ -28,7 +28,7 @@ app.use(
 
 app.use(
   "/api/users",
-  proxy(process.env.USER_SERVICE_URL || "http://localhost:4001", {
+  proxy(process.env.USER_SERVICE_URL || "http://localhost:4002", {
     proxyReqPathResolver: (req) => {
       return req.originalUrl;
     },
