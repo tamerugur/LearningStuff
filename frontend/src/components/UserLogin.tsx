@@ -21,10 +21,11 @@ export function UserLogin() {
   const [apiError, setApiError] = useState<string | null>(null);
   const [errorState, setErrorState] = useState<ErrorState>("hidden");
 
-  const mutation = useMutation<{ token: string }, Error, LoginData>({
+  const mutation = useMutation<{ accessToken: string }, Error, LoginData>({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      localStorage.setItem("authToken", data.token);
+      console.log("data:", data);
+      localStorage.setItem("authToken", data.accessToken);
       console.log("Login successful! Token stored.");
       if (errorState !== "hidden") {
         setErrorState("hiding");
@@ -65,7 +66,7 @@ export function UserLogin() {
         className="w-full max-w-2xl flex flex-col gap-6 text-left"
       >
         <div className="flex flex-col items-center gap-1">
-          <div className="w-1/2">
+          <div className="w-7/16">
             <Input
               {...register("identifier")}
               type="text"
@@ -80,7 +81,7 @@ export function UserLogin() {
         </div>
 
         <div className="flex flex-col items-center gap-1">
-          <div className="w-1/2">
+          <div className="w-7/16">
             <Input
               {...register("password")}
               type="password"
