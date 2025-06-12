@@ -1,0 +1,11 @@
+# Credentials for PostgreSQL
+POSTGRES_USER=johndoe
+POSTGRES_PASSWORD=randompassword
+
+# Database names
+AUTH_DB_NAME=AuthDB
+USER_DB_NAME=UserDB
+
+# External Ports for local connection (e.g., via a DB GUI)
+AUTH_DB_PORT=5431
+USER_DB_PORT=5432

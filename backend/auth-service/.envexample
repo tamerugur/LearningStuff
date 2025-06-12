@@ -1,3 +1,4 @@
 DATABASE_URL="postgresql://postgres:<your_password>@localhost:5433/AuthDB"
+RABBITMQ_URL="amqp://guest:guest@localhost:5672"
 PORT=YOUR_PORT_FOR_AUTH_SERVICE
 JWT_SECRET=YOUR_SECRET_KEY
