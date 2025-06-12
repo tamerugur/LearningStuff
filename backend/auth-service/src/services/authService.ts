@@ -11,85 +11,99 @@ const JWT_REFRESH_SECRET =
 export const AuthService = {
   async register(data: RegisterData) {
     const { email, username, fullName, tcId, password } = data;
+    console.log("📨 Incoming registration:", { email, username, tcId });
 
-    const orConditions: (
-      | { email: string }
-      | { username: string }
-      | { tcId: string }
-    )[] = [{ email }, { username }];
+    try {
+      const conditions: (
+        | { email: string }
+        | { username: string }
+        | { tcId: string }
+      )[] = [{ email }, { username }];
+      if (tcId) conditions.push({ tcId });
 
-    if (tcId) {
-      orConditions.push({ tcId });
+      const existing = await prisma.authUser.findFirst({
+        where: { OR: conditions },
+      });
+
+      if (existing) {
+        console.warn("🚫 Conflict: Email, username, or TC ID already exists.");
+        throw new Error("Email, username, or TC ID already exists");
+      }
+
+      const hashedPassword = await hashPassword(password);
+
+      const newUser = await prisma.authUser.create({
+        data: {
+          email,
+          username,
+          fullName,
+          tcId,
+          password: hashedPassword,
+        },
+      });
+
+      console.log("✅ User registered successfully:", newUser.id);
+
+      return {
+        id: newUser.id,
+        email: newUser.email,
+        username: newUser.username,
+      };
+    } catch (error) {
+      console.error("❌ Registration error:", error);
+      throw new Error("Registration failed");
     }
-
-    const existing = await prisma.authUser.findFirst({
-      where: {
-        OR: orConditions,
-      },
-    });
-
-    if (existing) {
-      throw new Error("Email, username, or TC ID already exists");
-    }
-
-    const hashed = await hashPassword(password);
-
-    const newUser = await prisma.authUser.create({
-      data: {
-        email,
-        username,
-        fullName,
-        tcId,
-        password: hashed,
-      },
-    });
-
-    return { id: newUser.id, email: newUser.email, username: newUser.username };
   },
 
   async login(data: LoginData) {
     const { identifier, password } = data;
+    console.log("🔐 Login attempt with:", identifier);
 
-    const user = await prisma.authUser.findFirst({
-      where: {
-        OR: [{ email: identifier }, { username: identifier }],
-      },
-    });
+    try {
+      const user = await prisma.authUser.findFirst({
+        where: {
+          OR: [{ email: identifier }, { username: identifier }],
+        },
+      });
 
-    if (!user) {
-      throw new Error("Invalid credentials");
-    }
-
-    const isPasswordValid = await comparePassword(password, user.password);
-
-    if (!isPasswordValid) {
-      throw new Error("Invalid credentials");
-    }
-
-    const accessToken = jwt.sign(
-      { id: user.id, email: user.email },
-      JWT_SECRET,
-      {
-        expiresIn: "15m",
+      if (!user) {
+        console.warn("🚫 Login failed: User not found");
+        throw new Error("Invalid credentials");
       }
-    );
 
-    const refreshToken = jwt.sign(
-      { id: user.id, email: user.email },
-      JWT_REFRESH_SECRET,
-      {
-        expiresIn: "7d",
+      const isPasswordValid = await comparePassword(password, user.password);
+
+      if (!isPasswordValid) {
+        console.warn("🚫 Login failed: Incorrect password");
+        throw new Error("Invalid credentials");
       }
-    );
 
-    const hashedRefreshToken = await hashPassword(refreshToken);
+      const accessToken = jwt.sign(
+        { id: user.id, email: user.email },
+        JWT_SECRET,
+        { expiresIn: "15m" }
+      );
 
-    await prisma.authUser.update({
-      where: { id: user.id },
-      data: { refreshToken: hashedRefreshToken },
-    });
+      const refreshToken = jwt.sign(
+        { id: user.id, email: user.email },
+        JWT_REFRESH_SECRET,
+        { expiresIn: "7d" }
+      );
 
-    return { accessToken, refreshToken };
+      const hashedRefreshToken = await hashPassword(refreshToken);
+
+      await prisma.authUser.update({
+        where: { id: user.id },
+        data: { refreshToken: hashedRefreshToken },
+      });
+
+      console.log("✅ Login successful:", user.id);
+
+      return { accessToken, refreshToken };
+    } catch (error) {
+      console.error("❌ Login error:", error);
+      throw new Error("Login failed");
+    }
   },
 
   async refreshToken(token: string) {
@@ -119,29 +133,30 @@ export const AuthService = {
       const accessToken = jwt.sign(
         { id: user.id, email: user.email },
         JWT_SECRET,
-        {
-          expiresIn: "15m",
-        }
+        { expiresIn: "15m" }
       );
 
       return { accessToken };
     } catch (error) {
+      console.error("❌ Refresh token error:", error);
       throw new Error("Invalid refresh token");
     }
   },
 
   async logout(token: string) {
     try {
-      const decoded = jwt.verify(token, JWT_REFRESH_SECRET) as {
-        id: string;
-      };
+      const decoded = jwt.verify(token, JWT_REFRESH_SECRET) as { id: string };
+
       await prisma.authUser.update({
         where: { id: decoded.id },
         data: { refreshToken: null },
       });
+
+      console.log(`🚪 User ${decoded.id} logged out.`);
     } catch (error) {
-      // If the token is invalid or expired, we don't need to do anything
-      return;
+      if (error instanceof Error) {
+        console.warn("⚠️ Logout failed (invalid token):", error.message);
+      }
     }
   },
 };
