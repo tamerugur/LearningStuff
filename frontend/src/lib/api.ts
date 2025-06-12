@@ -1,6 +1,6 @@
 import { RegisterData, LoginData } from "../schemas/userSchema";
 
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:4000";
 
 export async function registerUser(data: RegisterData) {
   const response = await fetch(`${API_URL}/api/auth/register`, {
