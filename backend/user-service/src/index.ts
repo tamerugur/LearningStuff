@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use("/api/users", userRoutes);
 
-const PORT = process.env.USER_SERVICE_PORT || 4001;
+const PORT = process.env.PORT || 4002;
 app.listen(PORT, () => {
   console.log(`✅ User service running on http://localhost:${PORT}`);
 });
