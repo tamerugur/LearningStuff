@@ -12,7 +12,7 @@ services:
     image: postgres:13
     container_name: auth-db
     ports:
-      - "${AUTH_DB_PORT}:5432"
+      - "${AUTH_DB_PORT}:5433"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -26,7 +26,7 @@ services:
     image: postgres:13
     container_name: user-db
     ports:
-      - "${USER_DB_PORT}:5432"
+      - "${USER_DB_PORT}:5434"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -59,6 +59,22 @@ services:
     depends_on:
       - user-db
       - rabbitmq
+    networks:
+      - microservices-net
+
+  gateway-service:
+    build:
+      context: ../gateway
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      AUTH_SERVICE_URL: http://auth-service:4001
+      USER_SERVICE_URL: http://user-service:4002
+      FRONTEND_ORIGIN: http://localhost:5173
+    depends_on:
+      - auth-service
+      - user-service
     networks:
       - microservices-net
 
