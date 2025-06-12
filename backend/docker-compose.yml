@@ -36,6 +36,32 @@ services:
     networks:
       - microservices-net
 
+  auth-service:
+    build:
+      context: ./auth-service
+    env_file:
+      - ./auth-service/.env
+    ports:
+      - "4001:4001"
+    depends_on:
+      - auth-db
+      - rabbitmq
+    networks:
+      - microservices-net
+
+  user-service:
+    build:
+      context: ./user-service
+    env_file:
+      - ./user-service/.env
+    ports:
+      - "4002:4002"
+    depends_on:
+      - user-db
+      - rabbitmq
+    networks:
+      - microservices-net
+
 networks:
   microservices-net:
     driver: bridge
