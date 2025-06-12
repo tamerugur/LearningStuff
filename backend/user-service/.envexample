@@ -1,0 +1,5 @@
+DATABASE_URL="postgresql://johndoe:randompassword@auth-db:5432/mydb?schema=public"
+RABBITMQ_URL="amqp://guest:guest@rabbitmq:5672"
+
+PORT=4002
+JWT_SECRET="YOUR_SECRET_KEY"
