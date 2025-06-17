@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useWatch, UseFormRegister, Control } from "react-hook-form";
 import { Checklist } from "@/components/Checklist";
 import { RegisterData } from "../schemas/userSchema";
@@ -54,7 +54,7 @@ export function ChecklistField({
     !!debouncedValue && checklist.some((item) => !item.passed);
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
+  const handleVisibilityChange = useCallback(() => {
     if (shouldShowChecklist) {
       setVisible(true);
     } else {
@@ -62,6 +62,10 @@ export function ChecklistField({
       return () => clearTimeout(timeout);
     }
   }, [shouldShowChecklist]);
+
+  useEffect(() => {
+    handleVisibilityChange();
+  }, [handleVisibilityChange]);
 
   return (
     <div className="w-full max-w-[44%]">

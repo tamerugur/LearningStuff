@@ -6,6 +6,12 @@ import { ChecklistField } from "./ChecklistField";
 import { registerUser } from "../lib/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useCallback, useMemo } from "react";
+
+type ChecklistItem = {
+  label: string;
+  passed: boolean;
+};
 
 export function UserRegister() {
   const { register, handleSubmit, control } = useForm<RegisterData>({
@@ -20,50 +26,65 @@ export function UserRegister() {
     },
   });
 
-  const onSubmit = (data: RegisterData) => {
-    mutation.mutate(data);
-  };
+  const handleSubmitForm = useCallback(
+    (data: RegisterData) => {
+      mutation.mutate(data);
+    },
+    [mutation]
+  );
 
-  const emailChecklist = (email: string) => [
-    {
-      label: "Valid email format",
-      passed: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-    },
-  ];
+  const emailChecklist = useCallback(
+    (email: string): ChecklistItem[] => [
+      {
+        label: "Valid email format",
+        passed: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+      },
+    ],
+    []
+  );
 
-  const fullNameChecklist = (name: string) => [
-    {
-      label: "Full name with at least two words",
-      passed: name.trim().split(/\s+/).length >= 2,
-    },
-  ];
+  const fullNameChecklist = useCallback(
+    (name: string): ChecklistItem[] => [
+      {
+        label: "Full name with at least two words",
+        passed: name.trim().split(/\s+/).length >= 2,
+      },
+    ],
+    []
+  );
 
-  const usernameChecklist = (username: string) => [
-    {
-      label: "3–16 characters",
-      passed: username.length >= 3 && username.length <= 16,
-    },
-    {
-      label: "Only letters, numbers, underscores",
-      passed: /^[a-zA-Z0-9_]+$/.test(username),
-    },
-  ];
+  const usernameChecklist = useCallback(
+    (username: string): ChecklistItem[] => [
+      {
+        label: "3–16 characters",
+        passed: username.length >= 3 && username.length <= 16,
+      },
+      {
+        label: "Only letters, numbers, underscores",
+        passed: /^[a-zA-Z0-9_]+$/.test(username),
+      },
+    ],
+    []
+  );
 
-  const passwordChecklist = (pw: string, repeatPw?: string) => [
-    { label: "At least 6 characters", passed: pw.length >= 6 },
-    { label: "Uppercase letter", passed: /[A-Z]/.test(pw) },
-    {
-      label: "Special character",
-      passed: /[!@#$%^&*(),.?":{}|<>]/.test(pw),
-    },
-    { label: "Contains digit", passed: /\d/.test(pw) },
-    {
-      label: "Passwords match",
-      passed: !!repeatPw && pw === repeatPw,
-    },
-  ];
+  const passwordChecklist = useCallback(
+    (pw: string, repeatPw?: string): ChecklistItem[] => [
+      { label: "At least 6 characters", passed: pw.length >= 6 },
+      { label: "Uppercase letter", passed: /[A-Z]/.test(pw) },
+      {
+        label: "Special character",
+        passed: /[!@#$%^&*(),.?":{}|<>]/.test(pw),
+      },
+      { label: "Contains digit", passed: /\d/.test(pw) },
+      {
+        label: "Passwords match",
+        passed: !!repeatPw && pw === repeatPw,
+      },
+    ],
+    []
+  );
 
-  const idChecklist = (id: string) => {
+  const idChecklist = useCallback((id: string): ChecklistItem[] => {
     const digits = id.split("").map(Number);
     const lengthValid = /^\d{11}$/.test(id) && id[0] !== "0";
     const tenthValid =
@@ -84,12 +105,12 @@ export function UserRegister() {
         passed: lengthValid && tenthValid && eleventhValid,
       },
     ];
-  };
+  }, []);
 
   return (
     <div className="relative flex justify-center mt-3 mb-3">
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleSubmitForm)}
         className="max-w-2xl w-full flex flex-col gap-6 text-left"
       >
         <div className="flex gap-y-4 justify-center mx-auto w-full max-w-2xl">

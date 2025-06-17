@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { loginSchema, LoginData } from "../schemas/userSchema";
 import { loginUser } from "../lib/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -46,23 +46,26 @@ export function UserLogin() {
 
       return () => clearTimeout(timer);
     }
-  }, [errorState, apiError]);
+  }, [errorState]);
 
-  const handleTransitionEnd = () => {
+  const handleTransitionEnd = useCallback(() => {
     if (errorState === "hiding") {
       setErrorState("hidden");
       setApiError(null);
     }
-  };
+  }, [errorState]);
 
-  const onSubmit = (data: LoginData) => {
-    mutation.mutate(data);
-  };
+  const handleSubmitForm = useCallback(
+    (data: LoginData) => {
+      mutation.mutate(data);
+    },
+    [mutation]
+  );
 
   return (
     <div className="w-full flex justify-center mt-3">
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(handleSubmitForm)}
         className="w-full max-w-2xl flex flex-col gap-6 text-left"
       >
         <div className="flex flex-col items-center gap-1">
