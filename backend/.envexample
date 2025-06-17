@@ -7,5 +7,5 @@ AUTH_DB_NAME=AuthDB
 USER_DB_NAME=UserDB
 
 # External Ports for local connection (e.g., via a DB GUI)
-AUTH_DB_PORT=5431
-USER_DB_PORT=5432
+AUTH_DB_PORT=5440
+USER_DB_PORT=5441
