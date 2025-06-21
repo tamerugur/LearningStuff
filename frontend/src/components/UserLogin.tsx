@@ -4,9 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import { loginSchema, LoginData } from "../schemas/userSchema";
 import { loginUser } from "../lib/api";
 import { useState, useEffect, useCallback } from "react";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import FloatingInput from "./FloatingInput";
+
 type ErrorState = "hidden" | "visible" | "hiding";
 
 export function UserLogin() {
@@ -64,12 +64,17 @@ export function UserLogin() {
 
   return (
     <div className="w-full flex justify-center mt-6">
-      <form>
+      <form
+        onSubmit={handleSubmit(handleSubmitForm)}
+        className="flex flex-col gap-6 text-left"
+        noValidate
+      >
         <FloatingInput
           type="text"
           id="identifier"
           label="Username or Email"
           required
+          error={errors.identifier?.message}
           {...register("identifier")}
           leftIcon={
             <svg
@@ -95,6 +100,7 @@ export function UserLogin() {
           id="password"
           label="Password"
           required
+          error={errors.password?.message}
           {...register("password")}
           leftIcon={
             <svg
@@ -114,40 +120,6 @@ export function UserLogin() {
             </svg>
           }
         />
-      </form>
-      {/* <form
-        onSubmit={handleSubmit(handleSubmitForm)}
-        className="w-full max-w-2xl flex flex-col gap-6 text-left"
-      >
-        <div className="flex flex-col items-center gap-1">
-          <div className="w-7/16">
-            <Input
-              {...register("identifier")}
-              type="text"
-              placeholder="Enter your email or username"
-            />
-            {errors.identifier && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.identifier.message}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center gap-1">
-          <div className="w-7/16">
-            <Input
-              {...register("password")}
-              type="password"
-              placeholder="Enter your password"
-            />
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-        </div>
 
         <div className="flex justify-center">
           <Button
@@ -165,6 +137,7 @@ export function UserLogin() {
         {mutation.isSuccess && (
           <p className="text-green-600 text-center mt-2">Login successful!</p>
         )}
+
         <div
           onTransitionEnd={handleTransitionEnd}
           className={`overflow-hidden ${
@@ -177,7 +150,7 @@ export function UserLogin() {
         >
           {apiError && <p className="text-red-600 text-center">{apiError}</p>}
         </div>
-      </form> */}
+      </form>
     </div>
   );
 }
