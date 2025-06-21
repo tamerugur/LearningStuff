@@ -108,7 +108,7 @@ export function UserRegister() {
   }, []);
 
   return (
-    <div className="relative flex justify-center mt-3 mb-3">
+    <div className="relative flex justify-center mt-6 mb-3">
       <form
         onSubmit={handleSubmit(handleSubmitForm)}
         className="max-w-2xl w-full flex flex-col gap-6 text-left"

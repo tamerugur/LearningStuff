@@ -4,9 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import { loginSchema, LoginData } from "../schemas/userSchema";
 import { loginUser } from "../lib/api";
 import { useState, useEffect, useCallback } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+import FloatingInput from "./FloatingInput";
 type ErrorState = "hidden" | "visible" | "hiding";
 
 export function UserLogin() {
@@ -63,8 +63,59 @@ export function UserLogin() {
   );
 
   return (
-    <div className="w-full flex justify-center mt-3">
-      <form
+    <div className="w-full flex justify-center mt-6">
+      <form>
+        <FloatingInput
+          type="text"
+          id="identifier"
+          label="Username or Email"
+          required
+          {...register("identifier")}
+          leftIcon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1rem"
+              height="1rem"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M4 21v-2a4 4 0 0 1 3-3.87" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          }
+        />
+
+        <FloatingInput
+          type="password"
+          id="password"
+          label="Password"
+          required
+          {...register("password")}
+          leftIcon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1rem"
+              height="1rem"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="5" y="11" width="14" height="10" rx="2" />
+              <path d="M12 16v.01" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+          }
+        />
+      </form>
+      {/* <form
         onSubmit={handleSubmit(handleSubmitForm)}
         className="w-full max-w-2xl flex flex-col gap-6 text-left"
       >
@@ -126,7 +177,7 @@ export function UserLogin() {
         >
           {apiError && <p className="text-red-600 text-center">{apiError}</p>}
         </div>
-      </form>
+      </form> */}
     </div>
   );
 }
