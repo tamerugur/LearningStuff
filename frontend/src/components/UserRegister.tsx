@@ -195,7 +195,7 @@ export function UserRegister() {
           type="submit"
           disabled={mutation.isPending}
           variant="default"
-          className={`self-center px-8 py-2 ${
+          className={`self-center px-8 py-2 select-none ${
             mutation.isPending ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >

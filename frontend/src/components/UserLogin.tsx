@@ -74,7 +74,6 @@ export function UserLogin() {
           type="text"
           id="identifier"
           label="Username or Email"
-          required
           error={errors.identifier?.message}
           {...register("identifier")}
           leftIcon={<User className="w-4 h-4" />}
@@ -84,13 +83,12 @@ export function UserLogin() {
           type="password"
           id="password"
           label="Password"
-          required
           error={errors.password?.message}
           {...register("password")}
-           leftIcon={<Lock className="w-4 h-4" />}
+          leftIcon={<Lock className="w-4 h-4" />}
         />
 
-        <div className="flex justify-center">
+        <div className="flex justify-center select-none">
           <Button
             type="submit"
             disabled={mutation.isPending}

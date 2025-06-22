@@ -49,7 +49,7 @@ export function User() {
       <div className="p-8 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 w-full max-w-xl">
         <div className="flex mb-6 relative">
           <button
-            className={`flex-1 py-2 text-sm font-medium transition-colors relative ${
+            className={`flex-1 py-2 text-sm font-medium transition-colors relative select-none ${
               activeTab === "login"
                 ? "text-blue-600 dark:text-blue-400"
                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -74,7 +74,7 @@ export function User() {
             />
           </button>
           <button
-            className={`flex-1 py-2 text-sm font-medium transition-colors relative ${
+            className={`flex-1 py-2 text-sm font-medium transition-colors relative select-none ${
               activeTab === "register"
                 ? "text-blue-600 dark:text-blue-400"
                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
