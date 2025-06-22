@@ -5,6 +5,7 @@ import { loginSchema, LoginData } from "../schemas/userSchema";
 import { loginUser } from "../lib/api";
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { User, Lock } from "lucide-react";
 import FloatingInput from "./FloatingInput";
 
 type ErrorState = "hidden" | "visible" | "hiding";
@@ -76,23 +77,7 @@ export function UserLogin() {
           required
           error={errors.identifier?.message}
           {...register("identifier")}
-          leftIcon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1rem"
-              height="1rem"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M4 21v-2a4 4 0 0 1 3-3.87" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          }
+          leftIcon={<User className="w-4 h-4" />}
         />
 
         <FloatingInput
@@ -102,23 +87,7 @@ export function UserLogin() {
           required
           error={errors.password?.message}
           {...register("password")}
-          leftIcon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1rem"
-              height="1rem"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="5" y="11" width="14" height="10" rx="2" />
-              <path d="M12 16v.01" />
-              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-            </svg>
-          }
+           leftIcon={<Lock className="w-4 h-4" />}
         />
 
         <div className="flex justify-center">

@@ -4,9 +4,10 @@ import { useMutation } from "@tanstack/react-query";
 import { registerSchema, RegisterData } from "../schemas/userSchema";
 import { ChecklistField } from "./ChecklistField";
 import { registerUser } from "../lib/api";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
+import { Mail, User, IdCard, Lock, KeyRound, AtSign } from "lucide-react";
+import FloatingInput from "./FloatingInput";
 
 type ChecklistItem = {
   label: string;
@@ -14,7 +15,12 @@ type ChecklistItem = {
 };
 
 export function UserRegister() {
-  const { register, handleSubmit, control } = useForm<RegisterData>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<RegisterData>({
     resolver: zodResolver(registerSchema) as Resolver<RegisterData>,
     criteriaMode: "all",
   });
@@ -111,62 +117,76 @@ export function UserRegister() {
     <div className="relative flex justify-center mt-6 mb-3">
       <form
         onSubmit={handleSubmit(handleSubmitForm)}
-        className="max-w-2xl w-full flex flex-col gap-6 text-left"
+        className="flex flex-col gap-6 text-left"
+        noValidate
       >
-        <div className="flex gap-y-4 justify-center mx-auto w-full max-w-2xl">
+        <div className="flex gap-x-4 gap-y-4 justify-center mx-auto w-full">
           <ChecklistField
             name="email"
             label="Email"
             register={register}
             control={control}
+            errors={errors}
             checklistFn={emailChecklist}
             required={true}
+            leftIcon={<Mail className="w-4 h-4" />}
           />
           <ChecklistField
             name="tcId"
             label="ID (T.C.)"
             register={register}
             control={control}
+            errors={errors}
             checklistFn={idChecklist}
+            leftIcon={<IdCard className="w-4 h-4" />}
           />
         </div>
 
-        <div className="flex gap-y-4 justify-center mx-auto w-full max-w-2xl">
+        <div className="flex gap-x-4 gap-y-4 justify-center mx-auto w-full">
           <ChecklistField
             name="fullName"
             label="Full Name"
             register={register}
             control={control}
+            errors={errors}
             checklistFn={fullNameChecklist}
             required={true}
+            leftIcon={<User className="w-4 h-4" />}
           />
           <ChecklistField
             name="username"
             label="Username"
             register={register}
             control={control}
+            errors={errors}
             checklistFn={usernameChecklist}
             required={true}
+            leftIcon={<AtSign className="w-4 h-4" />}
           />
         </div>
 
-        <div className="flex gap-y-4 justify-center mx-auto w-full max-w-2xl">
+        <div className="flex gap-x-4 gap-y-4 justify-center mx-auto w-full">
           <ChecklistField
             name="password"
             label="Password"
             register={register}
             control={control}
+            errors={errors}
             checklistFn={passwordChecklist}
             type="password"
             compareField="repeatPassword"
             required={true}
+            leftIcon={<Lock className="w-4 h-4" />}
           />
           <div className="flex-1 w-full max-w-[44%]">
-            <Input
-              {...register("repeatPassword")}
+            <FloatingInput
+              id="repeatPassword"
+              label="Repeat Password"
               type="password"
-              placeholder="Repeat Password *"
-              className="w-[90%] px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+              required={true}
+              error={errors.repeatPassword?.message}
+              {...register("repeatPassword")}
+              leftIcon={<KeyRound className="w-4 h-4" />}
             />
           </div>
         </div>

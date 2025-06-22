@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { useWatch, UseFormRegister, Control } from "react-hook-form";
+import {
+  useWatch,
+  UseFormRegister,
+  Control,
+  FieldErrors,
+} from "react-hook-form";
 import { Checklist } from "@/components/Checklist";
 import { RegisterData } from "../schemas/userSchema";
 import { useDebounceValue } from "../hooks/useDebounceValue";
-import { Input } from "@/components/ui/input";
-
+import FloatingInput from "./FloatingInput";
 type ChecklistItem = {
   label: string;
   passed: boolean;
@@ -17,8 +21,10 @@ type Props = {
   checklistFn: (value: string, compareValue?: string) => ChecklistItem[];
   register: UseFormRegister<RegisterData>;
   control: Control<RegisterData>;
+  errors: FieldErrors<RegisterData>;
   compareField?: keyof RegisterData;
   required?: boolean;
+  leftIcon?: React.ReactNode;
 };
 
 export function ChecklistField({
@@ -28,8 +34,10 @@ export function ChecklistField({
   checklistFn,
   register,
   control,
+  errors,
   compareField,
   required = false,
+  leftIcon,
 }: Props) {
   const value = useWatch({ control, name }) || "";
   const compareFieldValue =
@@ -69,12 +77,14 @@ export function ChecklistField({
 
   return (
     <div className="w-full max-w-[44%]">
-      <Input
-        {...register(name)}
+      <FloatingInput
+        id={name}
+        label={label}
         type={type}
-        autoComplete="off"
-        placeholder={required ? `${label} *` : label}
-        className="w-[90%] px-3 py-2 border rounded-md bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+        required={required}
+        error={errors[name]?.message as string}
+        leftIcon={leftIcon}
+        {...register(name)}
       />
       <Checklist items={checklist} visible={visible} />
     </div>

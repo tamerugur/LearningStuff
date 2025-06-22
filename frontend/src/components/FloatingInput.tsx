@@ -27,7 +27,7 @@ const FloatingInput = forwardRef<HTMLInputElement, FloatingInputProps>(
     ref
   ) => {
     return (
-      <div className="[--clr:#1f1f1f] dark:[--clr:#999999] relative flex flex-row items-center mb-3">
+      <div className="[--clr:#1f1f1f] dark:[--clr:#999999] relative flex flex-row items-center mb-3 select-none">
         <input
           ref={ref}
           {...props}
@@ -54,7 +54,7 @@ const FloatingInput = forwardRef<HTMLInputElement, FloatingInputProps>(
           {label}
         </label>
         {leftIcon && (
-          <span className="pointer-events-none absolute z-[1] left-0 top-0 bottom-0 flex items-center justify-center size-[40px] text-[--clr] peer-focus-visible:hidden peer-[:not(:placeholder-shown)]:hidden">
+          <span className="select-none pointer-events-none absolute z-[1] left-0 top-0 bottom-0 flex items-center justify-center size-[40px] text-[--clr] peer-focus-visible:hidden peer-[:not(:placeholder-shown)]:hidden">
             {leftIcon}
           </span>
         )}
