@@ -22,13 +22,16 @@ export function Checklist({ items, visible }: ChecklistProps) {
       }`}
     >
       {items.map((item, i) => (
-        <li key={i} className="flex items-center gap-2 font-medium">
+        <li
+          key={item.label || i}
+          className="flex items-center gap-2 font-medium"
+        >
           {item.passed ? (
-            <CheckCircle className="w-4 h-4 text-green-600" />
+            <CheckCircle className="w-4 h-4 text-success" />
           ) : (
-            <XCircle className="w-4 h-4 text-red-500" />
+            <XCircle className="w-4 h-4 text-error" />
           )}
-          <span>{item.label}</span>
+          <span className="text-muted-foreground">{item.label}</span>
         </li>
       ))}
     </ul>

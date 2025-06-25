@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { User } from "./components/User";
 import { MainPage } from "./pages/MainPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-
+import "./index.css";
 function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
