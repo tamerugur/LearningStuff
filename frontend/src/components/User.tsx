@@ -46,20 +46,19 @@ export function User() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
-      <div className="text-success">--success color (green-600).</div>
-      <div className="p-8 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 w-full max-w-xl">
+      <div className="p-8 shadow-lg rounded-xl border border-gray-200 dark:border-gray-700 bg-card w-full max-w-xl">
         <div className="flex mb-6 relative">
           <button
             className={`flex-1 py-2 text-sm font-medium transition-colors relative select-none ${
               activeTab === "login"
-                ? "text-blue-600 dark:text-blue-400"
+                ? "text-primary dark:text-primary"
                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             }`}
             onClick={() => handleTabChange("login")}
           >
             Login
             <div
-              className={`absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transition-transform duration-1100 ease-in-out ${
+              className={`absolute bottom-0 left-0 w-full h-0.5 bg-background transition-transform duration-1100 ease-in-out ${
                 activeTab === "login" ? "scale-x-100" : "scale-x-0"
               }`}
               style={{
@@ -77,14 +76,14 @@ export function User() {
           <button
             className={`flex-1 py-2 text-sm font-medium transition-colors relative select-none ${
               activeTab === "register"
-                ? "text-blue-600 dark:text-blue-400"
+                ? "text-primary dark:text-primary"
                 : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             }`}
             onClick={() => handleTabChange("register")}
           >
             Register
             <div
-              className={`absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 transition-transform duration-1100 ease-in-out ${
+              className={`absolute bottom-0 left-0 w-full h-0.5 bg-background transition-transform duration-1100 ease-in-out ${
                 activeTab === "register" ? "scale-x-100" : "scale-x-0"
               }`}
               style={{
@@ -115,8 +114,8 @@ export function User() {
                 : ""
             } ${
               activeTab === "login"
-                ? "translate-y-0 opacity-100"
-                : "-translate-y-full opacity-0"
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0"
             }`}
           >
             <UserLogin />
@@ -129,8 +128,8 @@ export function User() {
                 : ""
             } ${
               activeTab === "register"
-                ? "translate-y-0 opacity-100"
-                : "translate-y-full opacity-0"
+                ? "translate-x-0 opacity-100"
+                : "translate-x-full opacity-0"
             }`}
           >
             <UserRegister />

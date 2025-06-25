@@ -8,7 +8,7 @@ export function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 bg-card border-b border-border z-50">
+    <header className="fixed top-0 left-0 right-0 h-16 bg-background border-b border-border z-50">
       <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <Link to="/" className="text-xl font-semibold text-foreground">
