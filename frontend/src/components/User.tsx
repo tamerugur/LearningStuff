@@ -58,7 +58,7 @@ export function User() {
           >
             Login
             <div
-              className={`absolute bottom-0 left-0 w-full h-0.5 bg-background transition-transform duration-1100 ease-in-out ${
+              className={`absolute bottom-0 left-0 w-full h-0.5 bg-background transition-transform duration-600 ease-in-out ${
                 activeTab === "login" ? "scale-x-100" : "scale-x-0"
               }`}
               style={{
@@ -83,7 +83,7 @@ export function User() {
           >
             Register
             <div
-              className={`absolute bottom-0 left-0 w-full h-0.5 bg-background transition-transform duration-1100 ease-in-out ${
+              className={`absolute bottom-0 left-0 w-full h-0.5 bg-background transition-transform duration-600 ease-in-out ${
                 activeTab === "register" ? "scale-x-100" : "scale-x-0"
               }`}
               style={{
@@ -108,29 +108,31 @@ export function User() {
         >
           <div
             ref={loginRef}
-            className={`absolute w-full ${
-              isMounted
-                ? "transition-[transform,opacity] duration-1100 ease-in-out"
-                : ""
-            } ${
-              activeTab === "login"
-                ? "translate-x-0 opacity-100"
-                : "-translate-x-full opacity-0"
-            }`}
+            className={`absolute w-full transform transition-transform duration-600 ease-in-out
+    ${
+      activeTab === "login"
+        ? "z-10 translate-x-0"
+        : direction === "left"
+        ? "-translate-x-full z-0"
+        : "translate-x-full z-0"
+    }
+  `}
           >
             <UserLogin />
           </div>
+
+          {/* REGISTER PANEL */}
           <div
             ref={registerRef}
-            className={`absolute w-full ${
-              isMounted
-                ? "transition-[transform,opacity] duration-1100 ease-in-out"
-                : ""
-            } ${
-              activeTab === "register"
-                ? "translate-x-0 opacity-100"
-                : "translate-x-full opacity-0"
-            }`}
+            className={`absolute w-full transform transition-transform duration-600 ease-in-out
+    ${
+      activeTab === "register"
+        ? "z-10 translate-x-0"
+        : direction === "left"
+        ? "-translate-x-full z-0"
+        : "translate-x-full z-0"
+    }
+  `}
           >
             <UserRegister />
           </div>

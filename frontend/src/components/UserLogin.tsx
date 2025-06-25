@@ -93,7 +93,7 @@ export function UserLogin() {
             type="submit"
             disabled={mutation.isPending}
             variant="default"
-            className={`px-8 py-4 bg-button hover:bg-button-hover ${
+            className={`px-8 py-4 bg-background hover:bg-button-hover  ${
               mutation.isPending ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
