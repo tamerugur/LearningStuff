@@ -11,11 +11,11 @@ export function User() {
   const [direction, setDirection] = useState<Direction>("left");
   const [contentHeight, setContentHeight] = useState<number>(0);
   const contentRef = useRef<HTMLDivElement>(null);
+  const hasMounted = useRef(false); // 🚨 New
 
   const handleTabChange = useCallback(
     (tab: TabType) => {
       if (tab !== activeTab) {
-        // Register is to the right of login
         setDirection(tab === "register" ? "right" : "left");
         setActiveTab(tab);
       }
@@ -35,6 +35,10 @@ export function User() {
       return () => resizeObserver.disconnect();
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    hasMounted.current = true;
+  }, []);
 
   const variants = {
     enter: (dir: Direction) => ({
@@ -87,8 +91,8 @@ export function User() {
               <motion.div
                 key="login"
                 ref={contentRef}
-                variants={variants}
-                initial="enter"
+                variants={hasMounted.current ? variants : undefined}
+                initial={hasMounted.current ? "enter" : false}
                 animate="center"
                 exit="exit"
                 custom={direction}
@@ -103,8 +107,8 @@ export function User() {
               <motion.div
                 key="register"
                 ref={contentRef}
-                variants={variants}
-                initial="enter"
+                variants={hasMounted.current ? variants : undefined}
+                initial={hasMounted.current ? "enter" : false}
                 animate="center"
                 exit="exit"
                 custom={direction}
