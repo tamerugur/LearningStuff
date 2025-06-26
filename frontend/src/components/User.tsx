@@ -10,8 +10,8 @@ export function User() {
   const [activeTab, setActiveTab] = useState<TabType>("login");
   const [direction, setDirection] = useState<Direction>("left");
   const [contentHeight, setContentHeight] = useState<number>(0);
+  const [hasMounted, setHasMounted] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const hasMounted = useRef(false); // 🚨 New
 
   const handleTabChange = useCallback(
     (tab: TabType) => {
@@ -37,7 +37,7 @@ export function User() {
   }, [activeTab]);
 
   useEffect(() => {
-    hasMounted.current = true;
+    setHasMounted(true);
   }, []);
 
   const variants = {
@@ -61,7 +61,6 @@ export function User() {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
       <div className="p-8 shadow-lg rounded-xl border border-border bg-card w-full max-w-xl">
-        {/* Tabs */}
         <div className="flex mb-6 relative border-b border-border">
           {(["login", "register"] as const).map((tab) => (
             <button
@@ -81,18 +80,19 @@ export function User() {
           ))}
         </div>
 
-        {/* Animated Content */}
         <div
-          className="relative transition-[height] duration-300 ease-in-out overflow-hidden"
-          style={{ height: contentHeight }}
+          className={`relative overflow-hidden ${
+            hasMounted ? "transition-[height] duration-300 ease-in-out" : ""
+          }`}
+          style={hasMounted ? { height: contentHeight } : undefined}
         >
           <AnimatePresence custom={direction}>
             {activeTab === "login" && (
               <motion.div
                 key="login"
                 ref={contentRef}
-                variants={hasMounted.current ? variants : undefined}
-                initial={hasMounted.current ? "enter" : false}
+                variants={hasMounted ? variants : undefined}
+                initial={hasMounted ? "enter" : false}
                 animate="center"
                 exit="exit"
                 custom={direction}
@@ -107,8 +107,8 @@ export function User() {
               <motion.div
                 key="register"
                 ref={contentRef}
-                variants={hasMounted.current ? variants : undefined}
-                initial={hasMounted.current ? "enter" : false}
+                variants={hasMounted ? variants : undefined}
+                initial={hasMounted ? "enter" : false}
                 animate="center"
                 exit="exit"
                 custom={direction}
