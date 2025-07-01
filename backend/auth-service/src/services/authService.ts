@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 //project imports
 import { hashPassword, comparePassword } from "../utils/hash";
 import { RegisterData, LoginData } from "../schemas/userSchema";
-import { publishUserCreated } from '../events/publishUserCreated';
+import { publishUserCreated } from '../producers/publishUserCreated';
 import { USER_EVENTS } from "@tamerugur/event-schemas";
 
 
@@ -56,6 +56,7 @@ export const AuthService = {
         id: newUser.id,
         email: newUser.email,
         fullName: newUser.fullName,
+        username: newUser.username,
         nationalId: newUser.tcId || "",
         createdAt,
       });

@@ -1,4 +1,4 @@
-import { getChannel } from './rabbitmq';
+import { getChannel } from '../rabbitmq';
 import { USER_EVENTS } from '@tamerugur/event-schemas';
 
 export async function setupMessaging(): Promise<void> {

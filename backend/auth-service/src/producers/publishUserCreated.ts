@@ -1,4 +1,4 @@
-import { getChannel } from './rabbitmq';
+import { getChannel } from '../rabbitmq';
 import { USER_EVENTS, UserCreatedEvent } from '@tamerugur/event-schemas';
 
 export async function publishUserCreated(payload: UserCreatedEvent): Promise<void> {

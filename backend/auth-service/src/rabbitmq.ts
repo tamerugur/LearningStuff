@@ -10,6 +10,7 @@ const RABBITMQ_URL = process.env.RABBITMQ_URL ?? 'amqp://guest:guest@rabbitmq:56
 
 async function connect(): Promise<void> {
   if (connection) return;
+  console.log('[RabbitMQ] attempting', RABBITMQ_URL);
   connection = (await amqp.connect(RABBITMQ_URL)) as ChannelModel;
   // amqtp connect used to return a connection object, but now it returns channelmodel so I cast it specifically to avoid mismatch
   connection.on('error', err => console.error('[RabbitMQ] connection error:', err));
