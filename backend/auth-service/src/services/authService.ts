@@ -1,7 +1,13 @@
+//dependencies
 import { PrismaClient } from "@prisma/client";
+import jwt from "jsonwebtoken";
+//project imports
 import { hashPassword, comparePassword } from "../utils/hash";
 import { RegisterData, LoginData } from "../schemas/userSchema";
-import jwt from "jsonwebtoken";
+import { publishUserCreated } from '../events/publishUserCreated';
+import { USER_EVENTS } from "@tamerugur/event-schemas";
+
+
 
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
@@ -30,6 +36,7 @@ export const AuthService = {
         throw new Error("Email, username, or TC ID already exists");
       }
 
+      const createdAt = new Date().toISOString();
       const hashedPassword = await hashPassword(password);
 
       const newUser = await prisma.authUser.create({
@@ -39,10 +46,21 @@ export const AuthService = {
           fullName,
           tcId,
           password: hashedPassword,
+          createdAt: new Date(createdAt),
         },
       });
 
       console.log("✅ User registered successfully:", newUser.id);
+
+      await publishUserCreated({
+        id: newUser.id,
+        email: newUser.email,
+        fullName: newUser.fullName,
+        nationalId: newUser.tcId || "",
+        createdAt,
+      });
+      
+      console.log(`📤 User event published to '${USER_EVENTS.CREATED}': ${newUser.id}`);
 
       return {
         id: newUser.id,
@@ -53,7 +71,9 @@ export const AuthService = {
       console.error("❌ Registration error:", error);
       throw new Error("Registration failed");
     }
+    
   },
+  
 
   async login(data: LoginData) {
     const { identifier, password } = data;
