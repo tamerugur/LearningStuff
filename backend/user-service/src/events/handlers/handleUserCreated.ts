@@ -1,5 +1,5 @@
-import { UserCreatedEvent } from "../../../../event-schemas/userEvents";
-import { prisma } from "../../../lib/prisma";
+import { UserCreatedEvent } from '@microservices/event-schemas';
+import { prisma } from '../../../lib/prisma';
 
 export async function handleUserCreated(event: UserCreatedEvent) {
   await prisma.user.create({

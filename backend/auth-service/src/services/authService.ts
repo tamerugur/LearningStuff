@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import { hashPassword, comparePassword } from "../utils/hash";
 import { RegisterData, LoginData } from "../schemas/userSchema";
 import jwt from "jsonwebtoken";
-import { publishUserCreatedEvent } from "../events/publishUserCreated";
 
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
@@ -44,22 +43,6 @@ export const AuthService = {
       });
 
       console.log("✅ User registered successfully:", newUser.id);
-
-      // Publish user created event
-      try {
-        publishUserCreatedEvent({
-          id: newUser.id,
-          email: newUser.email,
-          fullName: newUser.fullName,
-          username: newUser.username,
-          nationalId: newUser.tcId || "",
-          createdAt: newUser.createdAt.toISOString(),
-        });
-        console.log("📤 User created event published successfully");
-      } catch (eventError) {
-        console.error("❌ Failed to publish user created event:", eventError);
-        // Don't fail the registration if event publishing fails
-      }
 
       return {
         id: newUser.id,
