@@ -7,9 +7,10 @@ export const USER_EVENTS = {
   export type UserCreatedEvent = {
     id: string;
     email: string;
-    createdAt: string; // ISO date string
     fullName: string;
-    nationalId: string; // TCKN
+    username: string;
+    nationalId: string | null; // TCKN
+    createdAt: string; // ISO date string
   };
 
   export type UserEventType = typeof USER_EVENTS[keyof typeof USER_EVENTS];

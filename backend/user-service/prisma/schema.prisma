@@ -12,7 +12,7 @@ model User {
   id       String @id
   email    String @unique
   fullName String
-  username     String   @unique
-  tcId     String @unique
+  username String   @unique
+  tcId     String? @unique
   createdAt    DateTime @default(now())
 }
