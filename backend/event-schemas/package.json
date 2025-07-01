@@ -1,10 +1,18 @@
 {
-    "name": "@microservices/event-schemas",
-    "version": "1.0.0",
-    "main": "dist/userEvents.js",
-    "types": "dist/userEvents.d.ts",
-    "scripts": {
+  "name": "@tamerugur/event-schemas",
+  "version": "1.0.0",
+  "description": "Shared event schemas for microservices",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "scripts": {
     "build": "tsc"
+  },
+  "keywords": ["events", "schemas", "microservices"],
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.0.0"
   }
-  }
-  
+} 

@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package*.json ./
+COPY .npmrc .npmrc
 RUN npm install
 
 # Copy prisma schema
