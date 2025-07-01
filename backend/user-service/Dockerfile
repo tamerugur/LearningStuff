@@ -1,31 +1,33 @@
-# Stage 1: Build stage
-FROM node:18-alpine AS builder
-
+# ───────── Build Stage ─────────
+FROM node:18-bullseye-slim AS builder
 WORKDIR /app
 
-# Copy package files and install dependencies
+# build-time deps
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libssl1.1 ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# install & generate client
 COPY package*.json ./
-COPY .npmrc .npmrc
-RUN npm install
-
-# Copy prisma schema
-COPY prisma ./prisma/
-
-# Generate Prisma client
+COPY .npmrc ./
+RUN npm ci
+COPY prisma ./prisma
 RUN npx prisma generate
 
-# Copy source code
+# compile
 COPY . .
-
-# Build TypeScript
 RUN npm run build
 
-# Stage 2: Production stage
-FROM node:18-alpine
-
+# ───────── Production Stage ─────────
+FROM node:18-bullseye-slim
 WORKDIR /app
 
-# Copy built files and dependencies from builder stage
+# runtime deps
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libssl1.1 ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# copy everything we need
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
@@ -33,4 +35,5 @@ COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 4002
 
-CMD ["node", "dist/index.js"] 
+# At container start, push your schema and then start the app
+CMD ["sh", "-c", "npx prisma db push && exec node dist/index.js"]
