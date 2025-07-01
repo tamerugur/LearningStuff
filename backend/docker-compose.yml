@@ -7,6 +7,11 @@ services:
       - "15672:15672"
     networks:
       - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   auth-db:
     image: postgres:13
@@ -21,6 +26,11 @@ services:
       - auth-db-data:/var/lib/postgresql/data
     networks:
       - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${AUTH_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   user-db:
     image: postgres:13
@@ -35,6 +45,11 @@ services:
       - user-db-data:/var/lib/postgresql/data
     networks:
       - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${USER_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   auth-service:
     build:
@@ -44,8 +59,10 @@ services:
     ports:
       - "4001:4001"
     depends_on:
-      - auth-db
-      - rabbitmq
+      auth-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     networks:
       - microservices-net
 
@@ -57,8 +74,10 @@ services:
     ports:
       - "4002:4002"
     depends_on:
-      - user-db
-      - rabbitmq
+      user-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     networks:
       - microservices-net
 
@@ -73,8 +92,10 @@ services:
       USER_SERVICE_URL: http://user-service:4002
       FRONTEND_ORIGIN: http://localhost:5173
     depends_on:
-      - auth-service
-      - user-service
+      auth-service:
+        condition: service_started
+      user-service:
+        condition: service_started
     networks:
       - microservices-net
 
