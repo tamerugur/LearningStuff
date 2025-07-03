@@ -6,7 +6,8 @@
   /* Default (light) theme */
   @theme {
     --color-primary: oklch(0.98 0.01 230);
-    --color-success: oklch(0.2692 0.0424 262.7);
+    --color-success: oklch(75% 0.2 145);
+    --color-error: oklch(70% 0.25 30);
     --color-background: oklch(0.3276 0.0678 257.27);
     --color-foreground: oklch(0.16 0.03 260);
     --color-button: oklch(0.98 0.01 230);
