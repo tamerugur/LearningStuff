@@ -31,7 +31,9 @@ export function Checklist({ items, visible }: ChecklistProps) {
           ) : (
             <XCircle className="w-4 h-4 text-error" />
           )}
-          <span className="text-muted-foreground">{item.label}</span>
+          <span className={item.passed ? "text-success" : "text-error"}>
+            {item.label}
+          </span>
         </li>
       ))}
     </ul>

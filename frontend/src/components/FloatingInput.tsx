@@ -39,7 +39,7 @@ const FloatingInput = forwardRef<HTMLInputElement, FloatingInputProps>(
           autoComplete="off"
           id={id}
           type={type}
-          className={`peer text-foreground pl-2 h-[40px] min-h-[40px] pr-[40px] leading-normal appearance-none resize-none box-border text-base w-full block text-left border border-border bg-input rounded-md outline-0 focus-visible:outline-0 focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20 ${
+          className={`peer text-foreground pl-8 h-[40px] min-h-[40px] pr-[40px] leading-normal appearance-none resize-none box-border text-base w-full block text-left border border-border bg-input rounded-md outline-0 focus-visible:outline-0 focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-primary/20 ${
             error
               ? "border-error focus-visible:border-error focus-visible:ring-error/20"
               : ""
@@ -54,7 +54,7 @@ const FloatingInput = forwardRef<HTMLInputElement, FloatingInputProps>(
           {label}
         </label>
         {leftIcon && (
-          <span className="select-none pointer-events-none absolute z-[1] left-0 top-0 bottom-0 flex items-center justify-center size-[40px] text-muted-foreground peer-focus-visible:hidden peer-[:not(:placeholder-shown)]:hidden">
+          <span className="select-none pointer-events-none absolute z-[1] left-0 top-0 bottom-0 flex items-center justify-center size-[40px] text-muted-foreground">
             {leftIcon}
           </span>
         )}
